@@ -1,24 +1,20 @@
-import { useState } from 'react'
-import Booking from '/favicon.png'
-import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+import Layout from './components/Layout'
+import Home from './pages/Home'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
-        <a href="#" target="_blank">
-          <img src={Booking} className="logo" alt="Vite logo" />
-        </a>
-      </div>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Layout/>}>
 
-      </div>
-    </>
+          <Route index element={<Home />} />
+
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
