@@ -5,14 +5,14 @@ import { Link, useNavigate, Navigate } from "react-router-dom"
 import { toast } from 'react-hot-toast'
 import Logo from '../assets/booking.png'
 import Loader from "../components/Loader"
-import { useAuthStore } from "../store/auth";
+//import { useAuthStore } from "../store/auth";
 
 
 const Login = () => {
 
   const navigate = useNavigate()
-  const { isAuth } = useAuthStore();
-  const setToken = useAuthStore((state) => state.setToken);
+  //const { isAuth } = useAuthStore();
+  //const setToken = useAuthStore((state) => state.setToken);
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -21,7 +21,7 @@ const Login = () => {
   const loginMutation = useMutation({
     mutationFn:() => loginReq(username, password),
     onSuccess:(res) => {
-      setToken(res.data.access, res.data.refresh);
+      //setToken(res.data.access, res.data.refresh);
       toast.success("Login successfully");
       navigate("/")
     },
@@ -37,7 +37,7 @@ const Login = () => {
   }
 
   if (loginMutation.isLoading) return <Loader />
-  if (isAuth) return (<Navigate to="/" />)
+  //if (isAuth) return (<Navigate to="/" />)
 
   return (
     <div className="flex min-h-full items-center justify-center py-2 px-3 sm:px-6 lg:px-8">
@@ -63,7 +63,7 @@ const Login = () => {
                 required
                 placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
 
-              <button type='submit' className="bg-sky-400 w-full hover:bg-sky-500 p-2 rounded-full text-white font-bold">
+              <button type='submit' className="bg-bordo w-full hover:bg-red-950 p-2 rounded-full text-white font-bold">
                   Login
               </button>
           </form>
@@ -71,7 +71,7 @@ const Login = () => {
           <div className="flex items-center justify-between text-sm lg:ml-5">
               <Link to={'/register'}>
                 Don`t have an account?
-                <span className='hover:text-sky-500 ml-2 transition-colors'>
+                <span className='hover:text-rojo-claro ml-2 transition-colors'>
                   Sign up here!
                 </span>
               </Link>
