@@ -11,6 +11,11 @@ export default {
       },
       colors: {
         'salmon': '#E7C192',
+        'negro': '#1A0913', 
+        'rojo-claro': '#F53E4C',
+        'bordo': '#910019',
+        'bordo-claro': '#FA174A',
+        'blanco': '#F0F0F0',
         'transparent': 'rgba(0,0,0,0)',
         'half-transparent': 'rgba(0,0,0, 0.8)',
       },
