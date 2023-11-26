@@ -27,16 +27,22 @@ function SideBar({visible, toggleSidebar}) {
           </Link>
         </li>
         <li className="m-1 p-5">
-          <img src={Booking} alt="Booking" className={`${visible && 'inline'} w-9`} />
-          <div className={`${visible ? 'inline' : 'hidden'} text-white hover:text-salmon w-full sm:w-32 m-1`}>Reservas</div>
+          <Link to={'#'}>
+            <img src={Booking} alt="Booking" className={`${visible && 'inline'} w-9`} />
+            <div className={`${visible ? 'inline' : 'hidden'} text-white hover:text-salmon w-full sm:w-32 m-1`}>Reservas</div>
+          </Link>
         </li>
         <li className="m-1 p-5">
-          <img src={Login} alt="Login" className={`${visible && 'inline'} w-9`} />
-          <div className={`${visible ? 'inline' : 'hidden'} text-white hover:text-salmon w-full sm:w-32 m-1`}>Login</div>
+          <Link to={'#'}>
+            <img src={Login} alt="Login" className={`${visible && 'inline'} w-9`} />
+            <div className={`${visible ? 'inline' : 'hidden'} text-white hover:text-salmon w-full sm:w-32 m-1`}>Login</div>
+          </Link>
         </li>
         <li className="m-1 p-5">
-          <img src={Register} alt="Register" className={`${visible && 'inline'} w-9`} />
-          <div className={`${visible ? 'inline' : 'hidden'} text-white hover:text-salmon w-full sm:w-32 m-1`}>Register</div>
+          <Link to={'#'}>
+            <img src={Register} alt="Register" className={`${visible && 'inline'} w-9`} />
+            <div className={`${visible ? 'inline' : 'hidden'} text-white hover:text-salmon w-full sm:w-32 m-1`}>Register</div>
+          </Link>
         </li>
       </ul>
     </nav>
