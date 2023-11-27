@@ -24,7 +24,6 @@ authAxios.interceptors.request.use(async (config) => {
   };
   
   const tokenDecoded = jwtDecode(token)
-  console.log(tokenDecoded);
 
   const expiration = new Date(tokenDecoded.exp * 1000)
   const now = new Date()

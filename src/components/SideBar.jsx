@@ -5,6 +5,7 @@ import Home from '../assets/home.png'
 import Booking from '../assets/booking.png'
 import Login from '../assets/login.png'
 import Register from '../assets/register.png'
+import Logout from '../assets/logout.png'
 import User from '../assets/user.png'
 
 const baseURL = import.meta.env.VITE_BACKEND_URL
@@ -15,13 +16,13 @@ function SideBar({visible, toggleSidebar}) {
   const token = useAuthStore.getState().access;
   const { isAuth } = useAuthStore()
 
-  //let user_id
+  let user_id
   let isAdmin
   let photo
 
   if(isAuth) {
     const tokenDecoded = jwtDecode(token)
-    //user_id = tokenDecoded.user_id
+    user_id = tokenDecoded.user_id
     isAdmin = tokenDecoded.is_staff
     photo = tokenDecoded.photo
   }
@@ -40,7 +41,7 @@ function SideBar({visible, toggleSidebar}) {
           <div className='h-1 w-8 mb-1 bg-white'></div>
       </div>
       {isAuth && (
-        <div className={`${visible ? 'top-4 left-24' : 'top-20 left-7'} bg-bordo rounded-full fixed transition-all duration-1000`} onClick={null}>
+        <Link to={`profile/${user_id}`} className={`${visible ? 'top-4 left-24' : 'top-20 left-7'} bg-bordo rounded-full fixed transition-all duration-1000`}>
           {photo == undefined || photo == null || photo == '' ? (
             <img
               className="h-12 w-12 rounded-full"
@@ -54,7 +55,7 @@ function SideBar({visible, toggleSidebar}) {
                 alt={`Foto de usuario`}
               />
             )}
-        </div>
+        </Link>
       )}
 
 
@@ -82,7 +83,7 @@ function SideBar({visible, toggleSidebar}) {
         {isAuth ? (
           <li className="m-1 p-5">
             <Link to={'/'}>
-              <img src={Login} alt="Logout" className='inline w-9' />
+              <img src={Logout} alt="Logout" className='inline w-8' onClick={logOutFun} />
               <span onClick={logOutFun} className={`${!visible && 'hidden'} text-white hover:text-salmon ml-3`}>
                 Sign out
               </span>
