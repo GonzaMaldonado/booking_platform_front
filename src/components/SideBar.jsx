@@ -1,49 +1,110 @@
 import { Link } from 'react-router-dom'
+import { useAuthStore } from '../store/auth'
+import { jwtDecode } from 'jwt-decode'
 import Home from '../assets/home.png'
 import Booking from '../assets/booking.png'
 import Login from '../assets/login.png'
 import Register from '../assets/register.png'
+import User from '../assets/user.png'
+
+const baseURL = import.meta.env.VITE_BACKEND_URL
 
 // eslint-disable-next-line react/prop-types
 function SideBar({visible, toggleSidebar}) {
+  
+  const token = useAuthStore.getState().access;
+  const { isAuth } = useAuthStore()
+
+  //let user_id
+  let isAdmin
+  let photo
+
+  if(isAuth) {
+    const tokenDecoded = jwtDecode(token)
+    //user_id = tokenDecoded.user_id
+    isAdmin = tokenDecoded.is_staff
+    photo = tokenDecoded.photo
+  }
+
+  
+  function logOutFun() {
+    useAuthStore.getState().logout()
+  }
 
   return (
     <nav className='fixed top-0 left-0 h-screen'>
 
-      <div className='flex flex-col fixed top-0 left-0 z-40 pt-5 pl-9' onClick={toggleSidebar}>
+      <div className='flex flex-col fixed top-7 left-9 z-40' onClick={toggleSidebar}>
           <div className='h-1 w-8 mb-1 bg-white'></div>
           <div className='h-1 w-8 mb-1 bg-white'></div>
           <div className='h-1 w-8 mb-1 bg-white'></div>
       </div>
-      <div className='bg-white rounded-full flex flex-col fixed top-16 left-8 pt-10 pl-10' onClick={null}>
-        <img src="#" alt="" />
-      </div>
+      {isAuth && (
+        <div className={`${visible ? 'top-4 left-24' : 'top-20 left-7'} bg-bordo rounded-full fixed transition-all duration-1000`} onClick={null}>
+          {photo == undefined || photo == null || photo == '' ? (
+            <img
+              className="h-12 w-12 rounded-full"
+              src={User}
+              alt={`Foto de usuario`}
+            />
+            ) : (
+              <img
+                className="h-12 w-12 rounded-full"
+                src={`${baseURL}${photo}`}
+                alt={`Foto de usuario`}
+              />
+            )}
+        </div>
+      )}
+
 
       <ul className={`transition-width duration-1000 flex flex-col font-bold h-screen fixed pt-20 pl-2 justify-center`}>
         <li className="m-1 p-5">
           <Link to={'/'}>
-            <img src={Home} alt="Home" className={`${visible && 'inline'} w-10`} />
-            <div className={`${visible ? 'inline' : 'hidden'} text-white hover:text-salmon w-full sm:w-32 m-1`}>Inicio</div>
+            <img src={Home} alt="Home" className='inline w-10' />
+            <strong className={`${!visible && 'hidden'} text-white hover:text-salmon ml-3`}>Inicio</strong>
           </Link>
         </li>
         <li className="m-1 p-5">
           <Link to={'#'}>
-            <img src={Booking} alt="Booking" className={`${visible && 'inline'} w-9`} />
-            <div className={`${visible ? 'inline' : 'hidden'} text-white hover:text-salmon w-full sm:w-32 m-1`}>Reservas</div>
+            <img src={Booking} alt="Booking" className='inline w-9' />
+            <strong className={`${!visible && 'hidden'} text-white hover:text-salmon ml-3`}>Reservas</strong>
           </Link>
         </li>
-        <li className="m-1 p-5">
-          <Link to={'/login'}>
-            <img src={Login} alt="Login" className={`${visible && 'inline'} w-9`} />
-            <div className={`${visible ? 'inline' : 'hidden'} text-white hover:text-salmon w-full sm:w-32 m-1`}>Login</div>
-          </Link>
-        </li>
-        <li className="m-1 p-5">
-          <Link to={'/register'}>
-            <img src={Register} alt="Register" className={`${visible && 'inline'} w-9`} />
-            <div className={`${visible ? 'inline' : 'hidden'} text-white hover:text-salmon w-full sm:w-32 m-1`}>Register</div>
-          </Link>
-        </li>
+        {isAdmin && (
+          <li className="m-1 p-5">
+            <Link to={`${baseURL}/admin/`}>
+              <img src={Booking} alt="Admin" className='inline w-9' />
+              <strong className={`${!visible && 'hidden'} text-white hover:text-salmon ml-3`}>Admin</strong>
+            </Link>
+          </li>
+        )}
+        {isAuth ? (
+          <li className="m-1 p-5">
+            <Link to={'/'}>
+              <img src={Login} alt="Logout" className='inline w-9' />
+              <span onClick={logOutFun} className={`${!visible && 'hidden'} text-white hover:text-salmon ml-3`}>
+                Sign out
+              </span>
+            </Link>
+          </li>
+        ) : (
+          <>
+          <li className="m-1 p-5">
+            <Link to={'/login'}>
+              <img src={Login} alt="Login" className='inline w-9' />
+              <strong className={`${!visible && 'hidden'} text-white hover:text-salmon ml-3`}>Login</strong>
+            </Link>
+          </li>
+          <li className="m-1 p-5">
+            <Link to={'/register'}>
+              <img src={Register} alt="Register" className='inline w-9' />
+              <strong className={`${!visible && 'hidden'} text-white hover:text-salmon ml-3`}>Register</strong>
+            </Link>
+          </li>
+          </>
+        )}
+        
       </ul>
     </nav>
   );

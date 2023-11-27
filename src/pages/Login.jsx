@@ -5,14 +5,14 @@ import { Link, useNavigate, Navigate } from "react-router-dom"
 import { toast } from 'react-hot-toast'
 import Logo from '../assets/booking.png'
 import Loader from "../components/Loader"
-//import { useAuthStore } from "../store/auth";
+import { useAuthStore } from "../store/auth";
 
 
 const Login = () => {
 
   const navigate = useNavigate()
-  //const { isAuth } = useAuthStore();
-  //const setToken = useAuthStore((state) => state.setToken);
+  const { isAuth } = useAuthStore();
+  const setToken = useAuthStore((state) => state.setToken);
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -21,7 +21,7 @@ const Login = () => {
   const loginMutation = useMutation({
     mutationFn:() => loginReq(username, password),
     onSuccess:(res) => {
-      //setToken(res.data.access, res.data.refresh);
+      setToken(res.data.access, res.data.refresh);
       toast.success("Login successfully");
       navigate("/")
     },
@@ -37,7 +37,7 @@ const Login = () => {
   }
 
   if (loginMutation.isLoading) return <Loader />
-  //if (isAuth) return (<Navigate to="/" />)
+  if (isAuth) return (<Navigate to="/" />)
 
   return (
     <div className="flex min-h-full items-center justify-center py-2 px-3 sm:px-6 lg:px-8">
