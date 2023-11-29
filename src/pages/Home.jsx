@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { bookingsReq } from '../api/bookings'
+import { housingsReq } from '../api/bookings'
 import Loader from '../components/Loader'
 import Banner from '../assets/banner.jpeg'
 
@@ -8,18 +8,18 @@ const baseURL = import.meta.env.VITE_BACKEND_URL
 const Home = () => {
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['booking'],
-    queryFn: bookingsReq,
+    queryKey: ['housings'],
+    queryFn: housingsReq,
   });
 
-  let listBookings
+  let listHousings
   if (data) {
-    listBookings = data.map(booking => 
-      <article key={booking.id} className="mx-auto justify-center items-center">
+    listHousings = data.map(housing =>
+      <article key={housing.id} className="mx-auto justify-center items-center">
         <div className="h-16 lg:h-20 w-16 lg:w-20 rounded-2xl mx-auto">
-          <img className="h-full w-full object-cover rounded-3xl bg-slate-700" src={`${baseURL}${booking.image}`} alt={booking.name} />
+          <img className="h-full w-full object-cover rounded-3xl bg-slate-700" src={`${baseURL}${housing.image}`} alt={housing.name} />
         </div>
-        <p className='text-center text-white font-bold'>{booking.name}</p>
+        <p className='text-center text-white font-bold'>{housing.name}</p>
       </article>
     )
   }
@@ -41,7 +41,7 @@ const Home = () => {
         <h2 className='text-2xl text-center'>Ocurrio un error al cargar bookings</h2>
       ) : (
         <section className="grid grid-cols-2 gap-3 mt-10">
-          {listBookings}
+          {listHousings}
           <article className="bg-black opacity-50 h-56">A1</article>
           <article className="bg-black opacity-50 h-56">A2</article>
           <article className="bg-black opacity-50 h-56">A2</article>

@@ -1,16 +1,16 @@
-import { axi, authAxios } from "./authAxios";
+import { authAxios } from "./authAxios";
 
-export const bookingsReq = async () => {
-  return await axi.get("/booking/");
+export const housingsReq = async () => {
+  return await authAxios.get("/housing/get_all_housings/");
 }
 
-export const loginReq = async (username, password) => {
-  const res = await axi.post('/users/login/', {username, password})
+export const housingReq = async (id) => {
+  const res = await authAxios.get(`/housing/get_housing/${id}/`)
   return res
 }
 
-export const getMeReq = async (id) => {
-  const res = await authAxios.get(`/users/${id}/`)
+export const bookingsReq = async (id) => {
+  const res = await authAxios.get(`/booking/${id}/`)
   return res?.data
 }
 
