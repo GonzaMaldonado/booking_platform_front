@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <div className="sticky top-0 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-12 bg-bordo text-white font-bold">
       <div className="sm:col-span-5 sm:col-start-2 mt-7 p-5 sm:p-0" id="contact">
-          <h4 className="text-center text-2xl mb-2">Puede enviarnos un mensaje</h4>
+          <h4 className="text-center text-2xl mb-2">You can send us a message</h4>
           <form>
             <input
               type="text"
@@ -64,7 +64,7 @@ const Footer = () => {
         </div>
 
         <div className="text-sm sm:col-span-10 sm:col-start-2 text-center bg-negro p-3">
-          <p>&copy; 2023 Portafolio. Todos los derechos reservados.</p>
+          <p>&copy; 2023 Bookings GM. All rights reserved.</p>
         </div>
   </div>
 

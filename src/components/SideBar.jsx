@@ -63,13 +63,13 @@ function SideBar({visible, toggleSidebar}) {
         <li className="m-1 p-5">
           <Link to={'/'}>
             <img src={Home} alt="Home" className='inline w-10' />
-            <strong className={`${!visible && 'hidden'} text-white hover:text-salmon ml-3`}>Inicio</strong>
+            <strong className={`${!visible && 'hidden'} text-white hover:text-salmon ml-3`}>Home</strong>
           </Link>
         </li>
         <li className="m-1 p-5">
           <Link to={'#'}>
             <img src={Booking} alt="Booking" className='inline w-9' />
-            <strong className={`${!visible && 'hidden'} text-white hover:text-salmon ml-3`}>Reservas</strong>
+            <strong className={`${!visible && 'hidden'} text-white hover:text-salmon ml-3`}>Bookings</strong>
           </Link>
         </li>
         {isAdmin && (

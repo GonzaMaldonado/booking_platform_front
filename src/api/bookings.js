@@ -1,12 +1,13 @@
-import { authAxios } from "./authAxios";
+import { axi ,authAxios } from "./authAxios";
 
 export const housingsReq = async () => {
-  return await authAxios.get("/housing/get_all_housings/");
+  const res = await axi.get("/get_all_housings/");
+  return res?.data
 }
 
 export const housingReq = async (id) => {
-  const res = await authAxios.get(`/housing/get_housing/${id}/`)
-  return res
+  const res = await authAxios.get(`/get_housing/${id}/`)
+  return res?.data
 }
 
 export const bookingsReq = async (id) => {
