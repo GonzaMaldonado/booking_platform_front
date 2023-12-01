@@ -19,12 +19,14 @@ function SideBar({visible, toggleSidebar}) {
   let user_id
   let isAdmin
   let photo
+  //let role
 
   if(isAuth) {
     const tokenDecoded = jwtDecode(token)
     user_id = tokenDecoded.user_id
     isAdmin = tokenDecoded.is_staff
     photo = tokenDecoded.photo
+    //role = tokenDecoded.role
   }
 
   
@@ -72,6 +74,14 @@ function SideBar({visible, toggleSidebar}) {
             <strong className={`${!visible && 'hidden'} text-white hover:text-salmon ml-3`}>Bookings</strong>
           </Link>
         </li>
+        {isAdmin && (
+          <li className="m-1 p-5">
+            <Link to={'offerer/'}>
+              <img src={Booking} alt="Offerer" className='inline w-9' />
+              <strong className={`${!visible && 'hidden'} text-white hover:text-salmon ml-3`}>Offerer</strong>
+            </Link>
+          </li>
+        )}
         {isAdmin && (
           <li className="m-1 p-5">
             <Link to={`${baseURL}/admin/`}>

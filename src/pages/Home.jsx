@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { housingsReq } from '../api/bookings'
+import { allHousingsReq } from '../api/housings'
 import Loader from '../components/Loader'
 import Banner from '../assets/banner.jpeg'
 
@@ -9,7 +9,7 @@ const Home = () => {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['housings'],
-    queryFn: housingsReq,
+    queryFn: allHousingsReq,
   });
 
   let listHousings

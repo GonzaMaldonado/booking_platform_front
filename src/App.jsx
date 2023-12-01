@@ -5,6 +5,7 @@ import Layout from './components/Layout'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import Offerer from './pages/Offerer/Offerer'
 import NotFound from './pages/NotFound'
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route element={<PrivateRoutes />}>
 
             <Route index element={<Home />} />
+            <Route path='offerer' element={<Offerer />} />
 
           </Route>
           <Route path='*' element={<NotFound />} />
