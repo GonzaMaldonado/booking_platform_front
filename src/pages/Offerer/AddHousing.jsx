@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Select from 'react-select'
+import { axi } from '../../api/authAxios'
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createHousingReq } from '../../api/housings';
 import Loader from '../../components/Loader';
@@ -15,15 +17,27 @@ const AddHousing = ({ close }) => {
       city: '',
       country: '',
       description: '',
-      services: [],
       capacity: 0,
       pets: true,
+      services: []
     })
-
+    const [servicesOptions, setServicesOptions] = useState([]);
     const [isHovered, setIsHovered] = useState(false);
-
     const [selectedFiles, setSelectedFiles] = useState([]);
-    const handleFileChange2 = (e) => {
+
+    
+    useEffect(() => {
+      axi.get('/all_services/') // Obtener opciones de servicios disponibles
+      .then(response => {
+        setServicesOptions(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    }, []);
+    
+
+    const handleFileChange = (e) => {
       const files = Array.from(e.target.files);
       // Limit to 5 files
       if (files.length > 5) {
@@ -54,7 +68,7 @@ const handleSubmit = (event) => {
         city: values.city,
         country: values.country,
         description: values.description,
-        services: values.services,
+        services: values.services.map(service => service.value), //Enviando lista con ids de services
         capacity: values.capacity,
         pets: values.pets,
         price_day: parseInt(values.price_day),
@@ -68,30 +82,30 @@ const handleSubmit = (event) => {
       setValues({ ...values, [name]: value });
     };
 
-const handleDragEnter = (event) => {
-    event.preventDefault();
-    setIsHovered(true);
-};
+    const handleDragEnter = (event) => {
+        event.preventDefault();
+        setIsHovered(true);
+    };
 
-const handleDragLeave = (event) => {
-    event.preventDefault();
-    setIsHovered(false);
-};
+    const handleDragLeave = (event) => {
+        event.preventDefault();
+        setIsHovered(false);
+    };
 
 
-const removeImage = () => {
-  setSelectedFiles([])
-  setIsHovered(false)
-}
+    const removeImage = () => {
+      setSelectedFiles([])
+      setIsHovered(false)
+    }
 
-if(addHousingMutation.isLoading) return (<Loader/>)
+  if(addHousingMutation.isLoading) return (<Loader/>)
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 ">
+    <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50">
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-full w-4/5 rounded-md">
         <div className="relative p-1 w-full h-full md:h-auto">
 
-          <div className="relative bg-white rounded-lg shadow dark:bg-gray-800 p-5 md:py-1 md:px-7">
+          <div className="relative bg-white rounded-lg shadow dark:bg-gray-800 p-5 md:py-0 md:px-7">
             <div className="flex justify-end rounded-t">
               <button 
                 onClick={close}
@@ -104,66 +118,70 @@ if(addHousingMutation.isLoading) return (<Loader/>)
               <div className="grid gap-2 mb-4 sm:grid-cols-6">
 
                 <div className='col-span-3'>
-                  <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                  <label htmlFor="name" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Name</label>
                   <input 
                     value={values.name} onChange={handleChange} required type="text" 
                     name="name" id="name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type housing name"/>
                 </div>
 
                 <div className='col-span-3'>
-                  <label htmlFor="price_day" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
+                  <label htmlFor="price_day" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Price</label>
                   <input 
                     value={values.price_day} onChange={handleChange} required type="number"
                     min={0} name="price_day" id="price_day" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999"/>
                 </div>
 
                 <div className='col-span-2'>
-                  <label htmlFor="address" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
+                  <label htmlFor="address" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Address</label>
                   <input 
                     value={values.address} onChange={handleChange} required type="text"
                     name="address" id="address" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Belgrano N° 123"/>
                 </div>
 
                 <div className='col-span-2'>
-                  <label htmlFor="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
+                  <label htmlFor="city" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">City</label>
                   <input 
                     value={values.city} onChange={handleChange} required type="text"
                     name="city" id="city" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Salta"/>
                 </div>
 
                 <div className='col-span-2'>
-                  <label htmlFor="country" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country</label>
+                  <label htmlFor="country" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Country</label>
                   <input 
                     value={values.country} onChange={handleChange} required type="text"
                     name="country" id="country" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Argentina"/>
                 </div>
 
                 <div className="sm:col-span-6">
-                  <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                  <label htmlFor="description" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Description</label>
                   <input
                     value={values.description} onChange={handleChange} id="description"
                     name="description" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Write housing description here"></input>                    
                 </div>
 
                 <div className="col-span-2">
-                  <label htmlFor="services" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Services</label>
-                  <input
-                    value={values.services} onChange={handleChange} required type='radio'
-                    id="services" name="services" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"></input>                    
+                  <label htmlFor="services" className="block mb-1 text-sm font-medium text-white"> Services
+                    <Select
+                      isMulti id="services" name="services" className="block p-1 w-full text-sm rounded-lg bg-gray-700 border border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
+                      options={servicesOptions.map(service => ({ value: service.id, label: service.name }))}
+                      value={values.services} onChange={handleChange} required
+                    />
+                    {/* selectedOptions => setServices(selectedOptions) */}
+                  </label>                  
                 </div>
 
                 <div className="col-span-2">
-                  <label htmlFor="capacity" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Capacity</label>
+                  <label htmlFor="capacity" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Capacity</label>
                   <input
                     value={values.capacity} onChange={handleChange} required type="number"
                     min={0} id="capacity" name="capacity" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"></input>                    
                 </div>
 
-                <div className="col-span-2">
-                  <label htmlFor="pets" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pets</label>
+                <div className="col-span-2 my-auto">
+                  <label htmlFor="pets" className="text-sm font-medium text-white px-4">Pets</label>
                   <input
                     value={values.pets} onChange={handleChange} type='checkbox' defaultChecked
-                    id="pets" name="pets" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"></input>                    
+                    id="pets" name="pets" className="rounded-lg bg-gray-700 border border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"></input>                    
                 </div>
 
                 <div className="col-span-6">
@@ -196,7 +214,7 @@ if(addHousingMutation.isLoading) return (<Loader/>)
                         type="file"
                         id="dropzone-file"
                         multiple={true}
-                        onChange={handleFileChange2}
+                        onChange={handleFileChange}
                         required
                         className="absolute w-full h-[250px] opacity-0"
                       />
@@ -218,7 +236,7 @@ if(addHousingMutation.isLoading) return (<Loader/>)
                   </div> 
                 </div>
               </div>
-              <button type="submit" className="text-white inline-flex items-center focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-bordo hover:bg-rojo-claro focus:ring-primary-800">
+              <button type="submit" className="text-white inline-flex items-center focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 text-center bg-bordo hover:bg-rojo-claro focus:ring-primary-800">
               <svg className="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path></svg>
               Add new housing
               </button>

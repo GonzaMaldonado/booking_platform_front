@@ -3,6 +3,8 @@ import { useAuthStore } from '../store/auth'
 import { jwtDecode } from 'jwt-decode'
 import Home from '../assets/home.png'
 import Booking from '../assets/booking.png'
+import Offerer from '../assets/offerer.png'
+import Admin from '../assets/admin.png'
 import Login from '../assets/login.png'
 import Register from '../assets/register.png'
 import Logout from '../assets/logout.png'
@@ -19,14 +21,14 @@ function SideBar({visible, toggleSidebar}) {
   let user_id
   let isAdmin
   let photo
-  //let role
+  let role
 
   if(isAuth) {
     const tokenDecoded = jwtDecode(token)
     user_id = tokenDecoded.user_id
     isAdmin = tokenDecoded.is_staff
     photo = tokenDecoded.photo
-    //role = tokenDecoded.role
+    role = tokenDecoded.role
   }
 
   
@@ -74,10 +76,10 @@ function SideBar({visible, toggleSidebar}) {
             <strong className={`${!visible && 'hidden'} text-white hover:text-salmon ml-3`}>Bookings</strong>
           </Link>
         </li>
-        {isAdmin && (
+        {role == 'O' && (
           <li className="m-1 p-5">
             <Link to={'offerer/'}>
-              <img src={Booking} alt="Offerer" className='inline w-9' />
+              <img src={Offerer} alt="Offerer" className='inline w-9' />
               <strong className={`${!visible && 'hidden'} text-white hover:text-salmon ml-3`}>Offerer</strong>
             </Link>
           </li>
@@ -85,7 +87,7 @@ function SideBar({visible, toggleSidebar}) {
         {isAdmin && (
           <li className="m-1 p-5">
             <Link to={`${baseURL}/admin/`}>
-              <img src={Booking} alt="Admin" className='inline w-9' />
+              <img src={Admin} alt="Admin" className='inline w-9' />
               <strong className={`${!visible && 'hidden'} text-white hover:text-salmon ml-3`}>Admin</strong>
             </Link>
           </li>
